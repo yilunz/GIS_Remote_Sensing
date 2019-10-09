@@ -186,7 +186,7 @@ class ResNet(nn.Module):
     #print(out.shape)
 
     #fully connected
-    out=out.view(-1,2*2*256) #flatten
+    out=out.view(-1,3*3*256) #flatten
     out=self.fc1(out)
     # out=self.bn4(out)
     # out=self.fc2(out)
