@@ -67,7 +67,7 @@ val_loader=torch.utils.data.DataLoader(val_dataset,batch_size=batch_size,shuffle
 
 batch_size=128
 LR=0.001
-Num_Epochs=200
+Num_Epochs=1000
 num_output=100
 scheduler_step_size=50
 scheduler_gamma=0.5
