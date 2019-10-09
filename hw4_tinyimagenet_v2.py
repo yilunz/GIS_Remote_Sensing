@@ -31,7 +31,7 @@ num_output=100
 scheduler_step_size=50
 scheduler_gamma=0.5
 
-device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 transform_train=transforms.Compose([transforms.RandomCrop(32, padding=4),
                   transforms.RandomHorizontalFlip(),
@@ -194,7 +194,7 @@ class ResNet(nn.Module):
 
 # device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 #basic_block=BasicBlock().to(device)
-resnet=ResNet().to(device)
+resnet=ResNet().cuda()
 
 criterion=nn.CrossEntropyLoss()
 #optimizer=torch.optim.RMSprop(resnet.parameters(),lr=LR,weight_decay=0.0005)
@@ -210,8 +210,8 @@ for epoch in range(Num_Epochs):
   correct = 0
   start_time = time.time()
   for images,labels in train_loader:
-    images=images.to(device)
-    labels=labels.to(device)
+    images=images.cuda()
+    labels=labels.cuda()
     outputs=resnet(images)
     #print(outputs.shape)
     
@@ -242,8 +242,8 @@ for epoch in range(Num_Epochs):
     total=0
     for images,labels in val_loader:
       #images,labels = data
-      images = images.to(device)
-      labels = labels.to(device)
+      images = images.cuda()
+      labels = labels.cuda()
       outputs = resnet(images)
 
       total += labels.size(0)
