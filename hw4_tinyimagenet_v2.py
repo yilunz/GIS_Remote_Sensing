@@ -27,13 +27,13 @@ import time
 batch_size=128
 LR=0.001
 Num_Epochs=500
-num_output=100
+num_output=200
 scheduler_step_size=50
 scheduler_gamma=0.5
 
 # device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-transform_train=transforms.Compose([transforms.RandomCrop(32, padding=4),
+transform_train=transforms.Compose([transforms.RandomCrop(64, padding=4),
                   transforms.RandomHorizontalFlip(),
                   #transforms.RandomVerticalFlip(),
                   transforms.ToTensor(),
@@ -112,27 +112,27 @@ class BasicBlock(nn.Module):
 class ResNet(nn.Module):
   def __init__(self):
     super(ResNet,self).__init__()
-    self.conv3=nn.Conv2d(3,32,3,stride=1,padding=1)#32, kernel_size=3, stride=1, padding=1 [32,32,32]
+    self.conv3=nn.Conv2d(3,32,3,stride=1,padding=1)#32, kernel_size=3, stride=1, padding=1 [32,64,64]
     self.bn3=nn.BatchNorm2d(32)
     self.relu1=nn.ReLU(inplace=True)
     self.dropout=nn.Dropout(p=0.5)
 
     #self.downsample1=nn.Conv2d(3,32,kernel_size=1,stride=1)
-    self.bb1=BasicBlock(32,32,1,1,downsample=None) 
+    self.bb1=BasicBlock(32,32,1,1,downsample=None) #[32,64,64]
     self.bb2=BasicBlock(32,32,1,1,downsample=None)
     #self.dropout1=nn.Dropout(p=0.5)
     
     self.downsample1=nn.Sequential(nn.Conv2d(32,64,kernel_size=3,stride=2,padding=1),nn.BatchNorm2d(64))
     #self.downsample1=nn.Conv2d(32,64,kernel_size=3,stride=2,padding=1)
-    self.bb3=BasicBlock(32,64,2,1,downsample=self.downsample1)
+    self.bb3=BasicBlock(32,64,2,1,downsample=self.downsample1) #[64,32,32]
     self.bb4=BasicBlock(64,64,1,1,downsample=None)
     self.bb5=BasicBlock(64,64,1,1,downsample=None)
     self.bb6=BasicBlock(64,64,1,1,downsample=None)
     #self.dropout2=nn.Dropout(p=0.5)
 
-    self.downsample2=nn.Sequential(nn.Conv2d(64,128,kernel_size=3,stride=2,padding=1),nn.BatchNorm2d(128))
+    self.downsample2=nn.Sequential(nn.Conv2d(64,128,kernel_size=3,stride=2,padding=1),nn.BatchNorm2d(128)) 
     #self.downsample2=nn.Conv2d(64,128,kernel_size=1,stride=2)
-    self.bb7=BasicBlock(64,128,2,1,downsample=self.downsample2)
+    self.bb7=BasicBlock(64,128,2,1,downsample=self.downsample2) #[128,16,16]
     self.bb8=BasicBlock(128,128,1,1,downsample=None)
     self.bb9=BasicBlock(128,128,1,1,downsample=None)
     self.bb10=BasicBlock(128,128,1,1,downsample=None)
@@ -140,12 +140,12 @@ class ResNet(nn.Module):
     
     self.downsample3=nn.Sequential(nn.Conv2d(128,256,kernel_size=3,stride=2,padding=1),nn.BatchNorm2d(256))
     #self.downsample3=nn.Conv2d(128,256,kernel_size=1,stride=2)
-    self.bb11=BasicBlock(128,256,2,1,downsample=self.downsample3)
+    self.bb11=BasicBlock(128,256,2,1,downsample=self.downsample3) #[256,8,8]
     self.bb12=BasicBlock(256,256,1,1,downsample=None)
     #self.dropout4=nn.Dropout(p=0.7)
 
-    self.maxpool=nn.MaxPool2d(kernel_size=4,stride=1)#2*2*256
-    self.fc1=nn.Linear(256,num_output)
+    self.maxpool=nn.MaxPool2d(kernel_size=4,stride=1)#[256,2,2]
+    self.fc1=nn.Linear(2*2*256,num_output)
     # self.bn4=nn.BatchNorm1d(512)
     # self.fc2=nn.Linear(512,num_output)
 
@@ -186,7 +186,7 @@ class ResNet(nn.Module):
     #print(out.shape)
 
     #fully connected
-    out=out.view(-1,256) #flatten
+    out=out.view(-1,2*2*256) #flatten
     out=self.fc1(out)
     # out=self.bn4(out)
     # out=self.fc2(out)
