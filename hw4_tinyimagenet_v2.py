@@ -20,7 +20,7 @@ import torch.distributed as dist
 
 import os
 import subprocess
-from mpi4py import MPI
+#from mpi4py import MPI
 import h5py
 import time
 
