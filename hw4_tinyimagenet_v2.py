@@ -64,11 +64,12 @@ train_dataset=datasets.ImageFolder(train_dir,transform=transform_train)
 #print(train_dataset.class_to_idx)
 train_loader=torch.utils.data.DataLoader(train_dataset,batch_size=batch_size,shuffle=True, num_workers=8)
 
-val_dir='/u/training/tra323/tiny-imagenet-200/val/images'
-if 'val_' in os.listdir(val_dir)[0]:
+val_dir='/u/training/tra323/tiny-imagenet-200/val/'
+if 'val_' in os.listdir(val_dir+'images/')[0]:
   create_val_folder(val_dir)
+  val_dir=val_dir+'images/'
 else:
-  pass
+  val_dir=val_dir+'images/'
 
 val_dataset=datasets.ImageFolder(val_dir,transform=transform_val)
 #print(val_dataset,class_to_idx)
