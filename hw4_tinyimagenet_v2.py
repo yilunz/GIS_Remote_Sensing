@@ -211,8 +211,8 @@ for epoch in range(Num_Epochs):
   correct = 0
   start_time = time.time()
   for images,labels in train_loader:
-    images=images.cuda()
-    labels=labels.cuda()
+    images=Variable(images.cuda())
+    labels=Variable(labels.cuda())
     outputs=resnet(images)
     #print(outputs.shape)
     
@@ -243,9 +243,10 @@ for epoch in range(Num_Epochs):
     total=0
     for images,labels in val_loader:
       #images,labels = data
-      images = images.cuda()
-      labels = labels.cuda()
+      images = Variable(images.cuda())
+      labels = Variable(labels.cuda())
       outputs = resnet(images)
+        
 
       total += labels.size(0)
       _,predicted = torch.max(outputs,1)
