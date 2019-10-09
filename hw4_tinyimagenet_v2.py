@@ -73,7 +73,7 @@ else:
 
 val_dataset=datasets.ImageFolder(val_dir,transform=transform_val)
 #print(val_dataset,class_to_idx)
-val_loader=torch.utils.data.DataLoader(val_dataset,batch_size=batch_size,shuffle=False,numworkers=8)
+val_loader=torch.utils.data.DataLoader(val_dataset,batch_size=batch_size,shuffle=False,num_workers=8)
 
 # batch_size=128
 # LR=0.001
