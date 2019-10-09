@@ -144,8 +144,8 @@ class ResNet(nn.Module):
     self.bb12=BasicBlock(256,256,1,1,downsample=None)
     #self.dropout4=nn.Dropout(p=0.7)
 
-    self.maxpool=nn.MaxPool2d(kernel_size=4,stride=1)#[256,2,2]
-    self.fc1=nn.Linear(2*2*256,num_output)
+    self.maxpool=nn.MaxPool2d(kernel_size=4,stride=2)#[256,2,2]
+    self.fc1=nn.Linear(3*3*256,num_output)
     # self.bn4=nn.BatchNorm1d(512)
     # self.fc2=nn.Linear(512,num_output)
 
