@@ -24,6 +24,15 @@ import subprocess
 import h5py
 import time
 
+batch_size=128
+LR=0.001
+Num_Epochs=500
+num_output=100
+scheduler_step_size=50
+scheduler_gamma=0.5
+
+device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 transform_train=transforms.Compose([transforms.RandomCrop(32, padding=4),
                   transforms.RandomHorizontalFlip(),
                   #transforms.RandomVerticalFlip(),
@@ -65,12 +74,12 @@ val_dataset=datasets.ImageFolder(val_dir,transform=transform_val)
 #print(val_dataset,class_to_idx)
 val_loader=torch.utils.data.DataLoader(val_dataset,batch_size=batch_size,shuffle=False,numworkers=8)
 
-batch_size=128
-LR=0.001
-Num_Epochs=500
-num_output=100
-scheduler_step_size=50
-scheduler_gamma=0.5
+# batch_size=128
+# LR=0.001
+# Num_Epochs=500
+# num_output=100
+# scheduler_step_size=50
+# scheduler_gamma=0.5
 
 class BasicBlock(nn.Module):
   def __init__(self,inplanes,planes,stride,padding,downsample=None):
@@ -183,7 +192,7 @@ class ResNet(nn.Module):
     #print(out.shape)
     return out
 
-device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 #basic_block=BasicBlock().to(device)
 resnet=ResNet().to(device)
 
